@@ -1,0 +1,198 @@
+
+{% load static %}
+{% load social_share %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% comment %} <meta http-equiv="Content-Security-Policy" content="connect-src 'self' https://www.facebook.com;"> {% endcomment %}
+    <!-- <meta http-equiv="Content-Security-Policy" content="frame-src 'self' https://*.facebook.com https://div.show;"> -->
+
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="Your Title">
+    <meta property="og:description" content="Your Description">
+    <meta property="og:image" content="https://localhost:8000/kisspng-real-madrid-c-f-uefa-champions-league-la-liga-juv-5b1351b072b362.2456057615279927524698-removebg-preview.png">
+    <meta property="og:url" content="https://localhost:8000/">
+    
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+
+
+    <title>Team Selection</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" ></script>
+     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            window.fbAsyncInit = function() {
+                FB.init({
+                    appId: '317194837350778',
+                    cookie: true,
+                    xfbml: true,
+                    version: 'v17.0'
+                });
+                FB.AppEvents.logPageView();
+            };
+
+            (function(d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) { return; }
+                js = d.createElement(s); js.id = id;
+                js.src = "https://connect.facebook.net/en_US/sdk.js";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+        });
+
+       
+    </script> 
+    <style>
+    body{
+        margin: 5%;
+    }
+    </style>
+</head>
+<body>
+<div>
+    <h2>My Social Login Homepage</h2>
+   {% if user.is_authenticated %}
+        <p>Hi {{ user.username }} !!!< /p>
+    {% else %}
+        <p>Hi Guest!</p> 
+ {% comment %} <form action="{url 'add_facebook_username'}" method="post"> {% endcomment %}
+        <div class="fb-login-button" data-size="large" data-button-type="login_with" data-layout="rounded" data-auto-logout-link="false" data-use-continue-as="false" scope="public_profile" onlogin="checkLoginState();"></div>
+    {% comment %} </form>  {% endcomment %}
+       {% endif %} 
+       
+</div>
+
+<!-- ... Your previous HTML ... -->
+
+<div>
+    <h1>Select Teams</h1>
+    <ul>
+        {% for team in teams %}
+        <li>
+            {{ team.name }}
+            {% if team.logo %}
+                <img src="{{ team.logo.url }}" alt="{{ team.name }} Logo" width="100" height="100">
+            {% endif %}
+            <button class="select-team" data-team="{{ team.pk }}">Select Team</button>
+        </li>
+        {% endfor %}
+    </ul>
+    <div id="selected-teams">
+        <h2>Selected Teams:</h2>
+        <p id="team1-name">Team: </p>
+        <p id="team1-score">Score: 0</p>
+        <p id="team2-name">Team: </p>
+        <p id="team2-score">Score: 0</p>
+    </div>
+    <div id="generate-predictions">
+        <button id="generate-button" disabled>Generate Predictions</button>
+        <button id="stop-button" disabled>Stop</button>
+    
+       <div class="fb-share-button" data-href="https://localhost:8000/" data-layout="button_count">  
+        {% post_to_facebook  "https://example.com/placeholder" "Share on Facebook" description %}    
+          
+    
+    </div> 
+            <img src="" alt="">
+                <!-- <div class="fb-share-button" data-href="https://ngrok.com/s/k8s-ingress " data-layout="" data-size=""><a target="_blank" href="#" class="fb-xfbml-parse-ignore" id="share-button">Partager</a> -->
+        </div>
+    </div>
+    <div id="message"></div>
+    <div id="predictions"></div>
+    </div>
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v17.0&appId=317194837350778&autoLogAppEvents=1" nonce="oRg48ioe"></script>
+    
+       <script>
+        $(document).ready(function() {
+            var selectedTeams = [];
+            var teamNames = [];  // To store selected team names
+            var predictionInterval;
+            
+            $('.select-team').click(function() {
+                var teamId = $(this).data('team');
+                
+                if (selectedTeams.length < 2) {
+                    selectedTeams.push(teamId);
+                    
+                    var teamName = $(this).prev().text();
+                    $('#team' + selectedTeams.length + '-name').text('Team: ' + teamName);
+                    teamNames[selectedTeams.length - 1] = teamName;  // Store team name
+                    
+                    if (selectedTeams.length === 2) {
+                        $('#generate-button').prop('disabled', false);
+                    }
+                }
+            });
+            
+            $('#generate-button').click(function() {
+                if (!predictionInterval) {
+                    updateScores(0, 0);
+                    startPredictions();
+                } else {
+                    stopPredictions();
+                }
+            });
+            
+            $('#stop-button').click(function() {
+                stopPredictions();
+            });
+            
+            function startPredictions() {
+                if (selectedTeams.length === 2) {
+                    predictionInterval = setInterval(generateRandomScore, 200);
+                    $('#generate-button').text('Generating...');
+                    $('#stop-button').prop('disabled', false);
+                    $('#share-button').prop('disabled', false);  // Enable share button
+                }
+            }
+            
+            function stopPredictions() {
+                clearInterval(predictionInterval);
+                predictionInterval = null;
+                $('#generate-button').text('Generate Predictions');
+                $('#stop-button').prop('disabled', true);
+            }
+            
+            function updateScores(score1, score2) {
+                $('#team1-score').text('Score: ' + score1);
+                $('#team2-score').text('Score: ' + score2);
+            }
+            
+            function generateRandomScore() {
+                var team1Id = selectedTeams[0];
+                var team2Id = selectedTeams[1];
+            
+                $.ajax({
+                    type: 'POST',
+                    url: '/generate_predictions/',  // Update this URL as needed
+                    data: { team1_id: team1Id, team2_id: team2Id, csrfmiddlewaretoken: '{{ csrf_token }}' },
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.predictions) {
+                            var prediction = response.predictions[0];  // Get the first prediction
+                            updateScores(prediction.score1, prediction.score2);
+                            displaySelectedTeams(response.selected_teams);  // Display selected teams
+                            shareScoreOnFacebook(prediction.score1, prediction.score2);  // Share the score
+                        }
+                    },
+                    error: function() {
+                        $('#message').text('An error occurred.');
+                    }
+                });
+            }
+            
+           
+            function displaySelectedTeams(selectedTeamsData) {
+                $('#team1-name').text('Team: ' + selectedTeamsData.team1_name);
+                $('#team2-name').text('Team: ' + selectedTeamsData.team2_name);
+            }
+        
+        });
+ </script>
+    
+
+
+</body>
+</html>

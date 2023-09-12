@@ -1,0 +1,513 @@
+
+{% load static %}
+{% load social_share %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="shortcut icon" href="{% static 'images/favicon.icon' %}" type="image/x-icon">
+      <meta property="og:description" content="Your Description">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <meta property="og:image" content="https://localhost:8000/kisspng-real-madrid-c-f-uefa-champions-league-la-liga-juv-5b1351b072b362.2456057615279927524698-removebg-preview.png">
+    <meta property="og:url" content="https://localhost:8000/">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" ></script>
+   
+    <style>
+        ._5h0i._88va {
+            background-color: transparent;
+            border-radius: 0.5rem !important;
+            border: 1px var(--primary-color) solid !important;
+            font-size: 16px !important;
+            font-weight: 500 !important;
+            width: 100%;
+            height: 3rem;
+            margin: 0.5rem 0;
+            color: black;
+        }
+        ._5h0i {
+            color: black;
+        }
+        .custom-scroll {
+            max-height: 300px; /* Adjust the maximum height as needed */
+            overflow-y: auto;
+          }
+       .selectteamspredct{
+      height: 80vh;
+        overflow-y: scroll;
+       }
+       #teams {
+    display: none;
+}
+    </style>
+    <!-- <link rel="stylesheet" href="css/all.min.css"> -->
+    <title>Match</title>
+</head>
+
+<body>
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v17.0&appId=678592764164250&autoLogAppEvents=1" nonce="D6m5Eu2D"></script>
+     <div class="full-container">
+        <div class="match-card vh-100 vw-100" id="matchCard">
+            <div class="container vh-75 ">
+                <div class="row d-flex justify-content-center align-items-center h-100 ">
+                    <div class="col-12 col-md-9 col-lg-7 col-xl-6 mt-5">
+                        <div class="card selectteamspredct">
+                            <div class="card-body m-5   ">
+                                <button id="close-button" class="btn btn-link close-button">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                                                                 <div id="selected-teams">
+                                <h2 class="text-center mb-3">Selected Teams:</h2>
+                                <div style="display: none;" class="team1content d-flex flex-row justify-content-around align-items center" id="team1content">
+                                    <div class="teamlogoname  d-flex flex-column align-items-center justify-content-center">
+                                <p id="team1-name"></p> <img id="team1-logo" src="" alt="Team 1 Logo" width="100" height="100"/>
+                                <p id="team1-score">Score: 0</p></div>
+                                <div class="team2content d-flex flex-column align-items-center justify-content-center">
+                                <p id="team2-name"> </p>
+                                <img id="team2-logo" src="" alt="Team 2 Logo"  width="100" height="100"/>
+                                <p id="team2-score">Score: 0</p></div>
+                               
+                                
+                            </div>
+                         
+                        
+                            </div>
+                            <div id="gif-container" class="d-flex justify-content-center align-items-center" style="display: none;">
+                                <!-- The GIF will be inserted here -->
+                              
+                            </div>
+                        </div>
+                        <!-- <div class="fb-share-button" data-href="https://64a7-154-121-25-179.ngrok-free.app/media/match.gif" data-layout="button_count">
+                            <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2F64a7-154-121-25-179.ngrok-free.app%2Fmedia%2Fmatch.gif" class="fb-xfbml-parse-ignore">Share</a>
+                        </div> -->
+                        
+                            
+                            
+                           
+                            <div class="btnstop d-flex justify-content-center align-items-center mb-5"><button id="stop-button" class="btn register w-50" disabled>Stop</button>
+                            </div>                    
+                          
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="sing-up-form vh-100 vw-100 " id="singupForm">
+            <div class="container vh-100 ">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+                        <div class="card">
+                            <div class="card-body m-5">
+                                <div class="d-flex justify-content-end">
+                                    <div class="btn-close" id="btnCloseSingup" ></div>
+
+                                </div>
+                                <h2 class="text-uppercase text-center">Create an account</h2>
+
+                                <form>
+                                    <!-- <div class="form-outline ">
+                                        <button class="btn facebook-btn " id="custom-facebook-button">
+                                          <i class="fab fa-facebook me-2"></i>Facebook
+                                        </button>
+                                    </div> -->
+                                    <!-- <div class="form-outline "> -->
+
+                                        <div class="fb-login-button d-flex flex-row justify-content-center align-items-center mt-3"  data-width="900px" data-size="large" data-button-type="" data-layout="" data-auto-logout-link="false" data-use-continue-as="false"></div>                      
+                                              <!-- </div> -->
+                                    <!-- <div class="form-outline ">
+                                        <p>Please <a href="{% url 'twitter_callback' %}">log in with Twitter</a> to post tweets.</p>                                        <button class="btn twitter-btn">
+                                          <i class="fab fa-twitter me-2"></i>Twitter
+                                        </button>
+                                    </a>
+                                    
+                                    </div> -->
+                                    <div class="form-outline ">
+                                        <button class="btn twitter-btn">
+                                          <i class="fab fa-twitter me-2"></i>Twitter
+                                        </button>
+                                    </div>
+                                    <div class="or">
+                                        <span>or</span>
+                                    </div>
+                                    <div class="form-outline ">
+                                        <input type="email" id="form3Example3cg" class="form-control form-control-lg" />
+                                        <label for="form3Example3cg">Your Email</label>
+                                    </div>
+
+                                    <div class="form-outline ">
+                                        <input type="password" id="form3Example4cg" class="form-control form-control-lg" />
+                                        <label for="form3Example4cg">Password</label>
+                                    </div>
+
+
+                                    <div class="d-flex justify-content-center">
+                                        <button type="button" class="btn register ">Register</button>
+                                    </div>
+
+                                    <p class="text-center text-muted ">Have already an account? <a id="loginEnter" class="fw-bold  text-body"><u>Login here</u></a></p>
+
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="login-form vh-100 vw-100" id="loginForm">
+
+            <div class="container vh-100 ">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+                        <div class="card" style="border-radius: 15px;">
+                            <div class="card-body m-5">
+                                <div class="d-flex justify-content-end">
+                                    <div class="btn-close" id="btnCloseLogin" ></div>
+                                </div>
+                                <h2 class="text-uppercase text-center">Welcome again</h2>
+
+                                <form>
+                                    <div class="form-outline ">
+
+                                        <div class="fb-login-button d-flex flex-row justify-content-center align-items-center mt-3"  data-width="900px" data-size="large" data-button-type="" data-layout="" data-auto-logout-link="false" data-use-continue-as="false"></div>                      
+                                              </div>                               
+                                                   <div class="form-outline ">
+                                        <button class="btn twitter-btn">
+                                          <i class="fab fa-twitter me-2"></i>Twitter
+                                        </button>
+                                    </div>
+                                    <div class="or">
+                                        <span>or</span>
+                                    </div>
+                                    <div class="form-outline ">
+                                        <input type="email" id="form3Example5cg" class="form-control form-control-lg" />
+                                        <label for="form3Example3cg">Your Email</label>
+                                    </div>
+
+                                    <div class="form-outline ">
+                                        <input type="password" id="form3Example6cg" class="form-control form-control-lg" />
+                                        <label for="form3Example4cg">Password</label>
+                                    </div>
+
+
+                                    <div class="d-flex justify-content-center">
+                                        <button type="button" class="btn  login-sub ">Login</button>
+                                    </div>
+
+                                    <p class="text-center text-muted ">You don't have an account? <a id="singupEnter" class="fw-bold text-body"><u>Register now</u></a></p>
+
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <header class="nav">
+            <div class="container">
+                <div class="logo"><img src="{% static 'images/Logo.png' %}" alt="logo"></div>
+                <div class="sing d-flex">
+                    <button class="btn sing-up" id="singupButton">sing up</button>
+                    <button class="btn login" id="loginButton">login</button>
+                    <!-- <form action="{% url 'home' %}" method="post">
+                        {% csrf_token %}
+                        <input type="text" name="Content" id="content">
+                        <button>Submit</button>
+                    </form> -->
+                </div>
+            </div>
+        </header>
+        <main>
+        <div class="container">
+                <h1 id="matchTitel">chose the league</h1>
+                <div class="leagues  justify-content-lg-start justify-content-md-center justify-content-sm-center   row " id="leagues">
+                    {% for tournament in tournaments  %}
+                    <div class="league btn col-lg-2 col-md-4 col-sm-8"    data-league-id="{{ tournament.id }}"><img src="{{tournament.logo.url}}" alt=""></div>
+                    {% endfor %}
+                </div>
+                <div class="teams d-flex justify-content-lg-start justify-content-md-center justify-content-sm-center row"   id="teams">
+                    {% for team in teams %}
+                    <div class="team btn col-lg-2 col-md-4 col-sm-8 " style="display: none;" data-team="{{ team.id }}">
+                        <img src="{{ team.logo.url }}" class="imgteam" alt="{{ team.name }}" width="200" height="100">
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                
+                <div class="next-prev-btn">
+                    <button class="btn prev-btn" id="prevButton"  >previous</button>
+                    <button class="btn" id="nextButton">next</button>
+                    <button class="btn"   id="generatMatch">Generate</button>
+                </div>
+                <h1>today Match</h1>
+                <div class="matches d-flex justify-content-lg-between justify-content-md-center  row" id="matchesToday">
+                    <div class="match-today col-lg-5 col-md-7 col-sm-10  card d-flex justify-content-between p-2 align-items-center">
+                        <div class="team-one">
+                            <div class="logo-team d-flex justify-content-between align-items-center  gap-2 ">
+                                <img src="{% static 'images/Arsenal.png' %}" alt="">
+                                <h6>arsenal</h6>
+                            </div>
+                        </div>
+                        <div class="info-match">
+                            <p>17:00</p>
+                            <span>Angland</span>
+                        </div>
+                        <div class="team-two">
+                            <div class="logo-team d-flex justify-content-between align-items-center  gap-3">
+                                <h6>chelse</h6>
+                                <img src="{% static 'images/chelsea.png' %}" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="match-today col-lg-5 col-md-7 col-sm-10 card d-flex justify-content-between p-2 align-items-center">
+                        <div class="team-one">
+                            <div class="logo-team d-flex justify-content-between align-items-center  gap-2 ">
+                                <img src="{% static 'images/Arsenal.png' %}" alt="">
+                                <h6>arsenal</h6>
+                            </div>
+                        </div>
+                        <div class="info-match">
+                            <p>17:00</p>
+                            <span>Angland</span>
+                        </div>
+                        <div class="team-two">
+                            <div class="logo-team d-flex justify-content-between align-items-center  gap-3">
+                                <h6>chelse</h6>
+                                <img src="{% static 'images/chelsea.png' %}" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="match-today col-lg-5 col-md-7 col-sm-10 card d-flex justify-content-between p-2 align-items-center">
+                        <div class="team-one">
+                            <div class="logo-team d-flex justify-content-between align-items-center  gap-2 ">
+                                <img src="{% static 'images/Arsenal.png' %}" alt="">
+                                <h6>arsenal</h6>
+                            </div>
+                        </div>
+                        <div class="info-match">
+                            <p>17:00</p>
+                            <span>Angland</span>
+                        </div>
+                        <div class="team-two">
+                            <div class="logo-team d-flex justify-content-between align-items-center  gap-3">
+                                <h6>chelse</h6>
+                                <img src="{% static 'images/chelsea.png' %}" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="match-today col-lg-5 col-md-7 col-sm-10 card d-flex justify-content-between p-2 align-items-center">
+                        <div class="team-one">
+                            <div class="logo-team d-flex justify-content-between align-items-center  gap-2 ">
+                                <img src="{% static 'images/Arsenal.png' %}" alt="">
+                                <h6>arsenal</h6>
+                            </div>
+                        </div>
+                        <div class="info-match">
+                            <p>17:00</p>
+                            <span>Angland</span>
+                        </div>
+                        <div class="team-two">
+                            <div class="logo-team d-flex justify-content-between align-items-center  gap-3">
+                                <h6>chelse</h6>
+                                <img src="{% static 'images/chelsea.png' %}" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </main>
+        <footer class="text-center p-3">
+
+            <div class="container">
+
+                <section class="mb-4">
+                    <a class="btn  btn-floating m-1" href="#!" role="button"><i class="fab fa-facebook-f"></i
+                ></a>
+
+                    <a class="btn  btn-floating m-1" href="#!" role="button"><i class="fab fa-twitter"></i
+                ></a>
+
+                    <a class="btn  btn-floating m-1" href="#!" role="button"><i class="fab fa-google"></i
+                ></a>
+
+                    <a class="btn  btn-floating m-1" href="#!" role="button"><i class="fab fa-instagram"></i
+                ></a>
+
+                    <a class="btn  btn-floating m-1" href="#!" role="button"><i class="fab fa-linkedin-in"></i
+                ></a>
+
+                    <a class="btn  btn-floating m-1" href="#!" role="button"><i class="fab fa-github"></i
+                ></a>
+                </section>
+            </div>
+            <div class="text-center">
+                © 2023 Copyright
+            </div>
+        </footer>
+        </div>
+        <script src="{% static 'js/all.min.js' %}"></script>
+        <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+        <script src="{% static 'js/script.js' %}"></script>
+        <script>
+            
+            $(document).ready(function() {
+                var selectedTeams = [];
+                var teamNames = [];  // To store selected team names
+                var teamLogos = [];  // To store selected team logos
+                var predictionInterval;
+                
+                $('.team').click(function() {
+                    var teamId = $(this).data('team');
+                    
+                    if (selectedTeams.length < 2) {
+                        selectedTeams.push(teamId);
+                        
+                        var teamName = $(this).prev().text();
+                        var teamLogoUrl = $(this).find('img').attr('src');
+                        
+                        $('#team' + selectedTeams.length + '-name').text(teamName);
+                        
+                        teamNames[selectedTeams.length - 1] = teamName;  // Store team name
+                        teamLogos[selectedTeams.length - 1] = teamLogoUrl;  // Store team logo URL
+                        
+                        if (selectedTeams.length === 2) {
+                            $('#generatMatch').prop('disabled', false);
+                        }
+                    }
+                });
+                
+                $('#generatMatch').click(function() {
+                    if (!predictionInterval) {
+                        updateScores(0, 0);
+                        startPredictions();
+                    } else {
+                        stopPredictions();
+                    }
+                });
+                
+                $('#stop-button').click(function() {
+                    $('#gif-container').show();
+                    $('#stop-button').hide();
+        
+                    // Show the selected teams container
+                    $('#team1content').hide();
+                    stopPredictions();
+
+                });
+               
+                function startPredictions() {
+                    if (selectedTeams.length === 2) {
+                        predictionInterval = setInterval(generateRandomScore, 200);
+                        $('#generatMatch').text('Generating...');
+                        $('#stop-button').prop('disabled', false);
+                        $('#share-button').prop('disabled', false); 
+                        $('#team1content').show();
+                        // Enable share button
+                        $('#gif-container').hide();
+                    }
+                }
+                
+                function stopPredictions() {
+                    clearInterval(predictionInterval);
+                    predictionInterval = null;
+                    $('#generatMatch').text('Generate Predictions');
+                    $('#stop-button').prop('disabled', true);
+                    updateGifDisplay('media/match.gif');  // Display the GIF
+                    $('#gif-container').show();
+                    $('#gif-container').show();
+                    // Show the selected teams container
+                    $('#team1content').hide();
+                }
+                
+                function updateScores(score1, score2) {
+                    $('#team1-score').text('Score: ' + score1);
+                    $('#team2-score').text('Score: ' + score2);
+                }
+                
+                function updateGifDisplay(gifUrl) {
+                    // Display the GIF in the "gif-container" div
+                    $('#gif-container').html('<div class="d-flex flex-column justify-content-around align-items-center">' + '<img src="' + gifUrl + '" alt="Match GIF" class="imggif shadow-lg">' + '<button id="download-gif-button" class="btn register mt-4 mb-4 w-50">Download GIF</button>' + '</div>');
+                    $('.fb-share-button').attr('data-href', gifUrl);
+                    // Add a click event handler to the "Download GIF" button
+                    $('#download-gif-button').click(function() {
+                        // Replace 'gifUrl' with the actual GIF URL received from your AJAX response
+                        var gifUrl = 'https://footballpredictions.local:8000/media/match.gif';
+                        // Replace with the actual GIF URL
+                
+                        // Create a hidden anchor element to trigger the download
+                        var downloadLink = document.createElement('a');
+                        downloadLink.href = gifUrl;
+                        downloadLink.download = 'match.gif'; // Specify the desired filename
+                        document.body.appendChild(downloadLink);
+                        downloadLink.click();
+                        document.body.removeChild(downloadLink);
+                    });
+                }
+            
+                // ... (rest of your code)
+            
+                function generateRandomScore() {
+                    var team1Id = selectedTeams[0];
+                    var team2Id = selectedTeams[1];
+                
+                    $.ajax({
+                        type: 'POST',
+                        url: '/generate_predictions/',  // Update this URL as needed
+                        data: { team1_id: team1Id, team2_id: team2Id, csrfmiddlewaretoken: '{{ csrf_token }}' },
+                        dataType: 'json',
+                        success: function(response) {
+                            if (response.predictions) {
+                                var prediction = response.predictions[0];  // Get the first prediction
+                                updateScores(prediction.score1, prediction.score2);
+                                displaySelectedTeams(response.selected_teams);  // Display selected teams
+                                displaySelectedTeamLogos();  // Display selected team logos
+                                // Share the score
+                            }
+                        },
+                       
+                        
+                    });
+                }
+                
+                function displaySelectedTeams(selectedTeamsData) {
+                    $('#team1-name').text('Team: ' + selectedTeamsData.team1_name);
+                    $('#team2-name').text('Team: ' + selectedTeamsData.team2_name);
+                }
+                
+                function displaySelectedTeamLogos() {
+                    $('#team1-logo').attr('src', teamLogos[0]);
+                    $('#team2-logo').attr('src', teamLogos[1]);
+                }
+   // Get a reference to the close button
+   const closeButton = document.getElementById('close-button');
+        
+   // Add a click event listener to the close button
+   closeButton.addEventListener('click', function() {
+       // Get a reference to the card div
+       const cardDiv = document.querySelector('#matchCard');
+       selectedTeams = [];
+                 teamNames = [];  // To store selected team names
+                 teamLogos = [];  
+                 $('#generatMatch').text('Generate');// 
+       clearInterval(predictionInterval);
+       predictionInterval = null;
+       // Hide the card div
+       cardDiv.style.display = 'none';
+   });
+            });
+            
+        </script>
+      
+
+        <!-- <script src="{% static 'https://kit.fontawesome.com/d14523d182.js' %}" crossorigin="anonymous"></script> -->
+</body>
+
+</html>

@@ -1,0 +1,366 @@
+:root {
+    --primary-color: #470A5F;
+    --seconde-color: #f0ecec;
+    --white: #ffff;
+    --black: #0000;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+
+.full-container {
+    background-image: linear-gradient(var(--primary-color), rgba(255, 255, 255, 0)), url(../images/soccer-players-action-professional-stadium.jpg) !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+}
+
+.nav {
+    background-color: var(--white);
+    padding: 0.5rem 0;
+}
+
+.nav .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.hidden {
+    display: none;
+}
+
+
+.logo img {
+    width: 4rem;
+}
+
+.sing {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.sing .login {
+    text-transform: uppercase;
+    max-width: 6rem;
+    min-width: 6rem;
+    background-color: var(--primary-color);
+    color: var(--white);
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.sing .sing-up {
+    text-transform: uppercase;
+    max-width: 6rem;
+    min-width: 6rem;
+    color: var(--primary-color);
+    border: solid 2px var(--primary-color);
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.sing .sing-up:hover {
+    color: var(--primary-color);
+}
+
+.sing .login:hover {
+    color: var(--white);
+}
+
+.sing .sing-up:focus,
+.sing .login:focus {
+    box-shadow: none;
+}
+
+main {
+    padding: 1.5rem 0;
+}
+
+main h1 {
+    text-transform: uppercase;
+    color: var(--white);
+    margin: 0;
+}
+
+.teams,
+.leagues,
+.matches {
+    padding: 1.5rem 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: start;
+    gap: 2rem;
+}
+
+.teams div,
+.leagues div {
+    min-width: 8rem;
+    min-height: 8rem;
+    border-radius: 50rem;
+    background-color: var(--seconde-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.teams div img,
+.leagues div img {
+    width: 4rem;
+}
+
+.next-prev-btn {
+    display: flex;
+    justify-content: space-between;
+}
+
+#generatMatch {
+    display: none;
+    position: relative;
+}
+
+#nextButton {
+    position: relative;
+}
+
+#nextButton::after,
+#generatMatch::after {
+    content: "You must select tow team";
+    position: absolute;
+    color: #cb081a;
+    background-color: #e9c7c7;
+    font-size: 10px;
+    width: 100%;
+    bottom: -2.5rem;
+    text-transform: math-auto;
+    right: 0%;
+    display: none;
+}
+
+#nextButton.show-after::after,
+#generatMatch.show-after::after {
+    display: block;
+}
+
+.next-prev-btn button {
+    text-transform: uppercase;
+    max-width: 6rem;
+    min-width: 6rem;
+    background-color: var(--white);
+    color: var(--primary-color);
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.matches .league {
+    padding: 1rem;
+    border-radius: 1rem;
+    background-color: var(--white);
+}
+
+.matches h6 {
+    text-transform: capitalize;
+}
+
+footer {
+    background-image: linear-gradient(#f0ecec00, #f0ececaf);
+    color: var(--primary-color) !important;
+}
+
+footer a {
+    color: var(--primary-color) !important;
+}
+
+.sing-up-form,
+.match-card {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.2);
+    animation-duration: 0.3s;
+    animation-fill-mode: forwards;
+    animation-name: fadeInOut;
+}
+
+@keyframes fadeInOut {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.match-card .card,
+.sing-up-form .card {
+    border-radius: 15px;
+}
+
+.facebook-btn,
+.twitter-btn,
+.login-form input,.fb-login-button{
+    background-color: var(--white) !important;
+    border-radius: 0.5rem !important;
+    border: 1px var(--primary-color) solid !important;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    width: 100%;
+    height: 3rem;
+    margin: 0.5rem 0;
+}
+
+.login-form {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.2);
+    animation-duration: 0.3s;
+    animation-fill-mode: forwards;
+    animation-name: fadeInOut;
+}
+
+.btn-check:focus+.btn,
+.btn:focus {
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem #470a5f31 !important;
+}
+
+.login-form .card {
+    border-radius: 15px;
+}
+
+#singupEnter,
+#loginEnter {
+    cursor: pointer;
+}
+
+.league.btn {
+    cursor: pointer;
+    transition: transform 200ms ease-in-out, box-shadow 200ms ease-in-out;
+}
+
+.league.btn:hover {
+    transform: scale(1.1);
+}
+
+.league.clicked {
+    box-shadow: 0px 0px 20px 8px #673ab7;
+}
+
+.facebook-btn,
+.twitter-btn,
+.sing-up-form input {
+    background-color: var(--white) !important;
+    border-radius: 0.5rem !important;
+    border: 1px var(--primary-color) solid !important;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    width: 100%;
+    height: 3rem;
+    margin: 0.5rem 0;
+}
+
+.or {
+    font-size: 16px;
+    color: rgb(131, 131, 131);
+    width: 100%;
+    text-align: center;
+}
+
+.register,
+.login-sub {
+    text-transform: uppercase;
+    width: 100%;
+    height: 3rem;
+    background-color: var(--primary-color) !important;
+    color: var(--white) !important;
+    font-weight: 600;
+    font-size: 1rem;
+    margin: 1rem 0;
+}
+
+.btn-close {
+    text-align: left;
+    cursor: pointer;
+}
+
+.match-today {
+    flex-direction: row !important;
+    height: 5rem;
+    cursor: pointer;
+}
+
+.logo-team img {
+    max-width: 2rem;
+    max-height: 2rem;
+}
+
+.info-match {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.info-match p {
+    margin: 0;
+    font-weight: 700;
+}
+
+.info-match span {
+    font-size: 11px;
+    color: rgba(0, 0, 0, 0.400);
+    font-weight: 700;
+}
+
+.teams {
+    display: none;
+}
+
+.leagues,
+.teams {
+    transition: opacity 0.5s, transform 0.5s;
+}
+
+.teams {
+    opacity: 0;
+    transform: scale(0.95);
+    display: none;
+}
+#teams {
+    display: none;
+}
+
+.teams.visible {
+    opacity: 1;
+    transform: scale(1);
+    display: flex;
+}
+
+.visible {
+    display: flex;
+}
+
+.team.btn {
+    cursor: pointer;
+    transition: transform 200ms ease-in-out, box-shadow 200ms ease-in-out;
+}
+
+.team.btn:hover {
+    transform: scale(1.1);
+}
+
+.team.clicked {
+    box-shadow: 0px 0px 20px 8px #673ab7;
+}
+
+.imggif{
+    border-radius: 15px;
+}
