@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+import whitenoise
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,17 +26,14 @@ SECRET_KEY = 'django-insecure-xk1xph-nmesq=&^y9l6c1uj=&s$3hlo%0krgvw)=a!*7^v38ab
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1", ".railway.app"]
+ALLOWED_HOSTS = ['*']
+
 TWITTER_API_KEY = 'lD8MIDfbsO216w7Jh04Rzt9x9'
 TWITTER_API_SECRET = 'Vje3Y4mmmMJltgc7YGGIYDGvUgzUswv91CL4kCGxXuHR2XRoOS'
 ACCESS_TOKEN = '1697935934929485824-w7uBXn8EfOp43BH6xQodGuA4jByRQn'
 ACCESS_TOKEN_SECRET = 'CL0MKtCDt7bGl8nsoYbYzEw4dzJ6prqgTDp3CWX9NzCEc'
 TWITTER_CALLBACK_URL = 'https://footballpredictions.local:8000/twitter/callback'
-import dj_database_url
-from django.conf import settings
 
-db_from_env = dj_database_url.config(conn_max_age=500)
-settings.DATABASES["default"].update(db_from_env)
 
 # Application definition
 
@@ -62,9 +60,9 @@ INSTALLED_APPS = [
 SITE_ID = 1  
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+       "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     # 'django.middleware.locale.LocaleMiddleware',
-    
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
             'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -150,11 +148,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
-STATIC_ROOT = (os.path.join(BASE_DIR,'static'))
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR,'static')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'football_predictions/static')
 ]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
