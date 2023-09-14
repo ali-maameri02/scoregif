@@ -400,12 +400,12 @@
                     // Show the selected teams container
                     $('#team1content').hide();
                     stopPredictions();
-                    updateGifDisplay('/media/match.gif');
+                    updateGifDisplay('media/match.gif');
                 });
                
                 function startPredictions() {
                     if (selectedTeams.length === 2) {
-                        predictionInterval = setInterval(generateRandomScore, 200);
+                        predictionInterval = setInterval(generateRandomScore, 50);
                         $('#generatMatch').text('Generating...');
                         $('#stop-button').prop('disabled', false);
                         $('#share-button').prop('disabled', false); 
@@ -420,7 +420,7 @@
                     predictionInterval = null;
                     $('#generatMatch').text('Generate Predictions');
                     $('#stop-button').prop('disabled', true);
-                    updateGifDisplay('/media/match.gif');  // Display the GIF
+                    updateGifDisplay('media/match.gif');  // Display the GIF
                     $('#gif-container').show();
                     $('#gif-container').show();
                     // Show the selected teams container
