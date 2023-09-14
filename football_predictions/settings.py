@@ -188,8 +188,8 @@ THIRD_PARTY_APPS = [
 SOCIALACCOUNT_PROVIDERS = {
     'facebook': {
         'APP': {
-            'client_id': '2073029319707465',
-            'secret': '14a91fae72ea011ae433b3a933153cae',
+            'client_id': '1215879345774527',
+            'secret': '87da695826fb27b9f8b14f8b17a1f831',
         }
     }
 }
