@@ -157,26 +157,14 @@ import os
 from random import randint
 from .models import Team  # Make sure to import your Team model
 from io import BytesIO  # Import BytesIO for working with image data
-from django.db.models import F
-from django.core.cache import cache
-
 def generate_predictions(request):
     if request.method == 'POST' and 'team1_id' in request.POST and 'team2_id' in request.POST:
         try:
             team1_id = int(request.POST['team1_id'])
             team2_id = int(request.POST['team2_id'])
             
-            # Attempt to retrieve teams from cache
-            team1 = cache.get(f'team_{team1_id}')
-            team2 = cache.get(f'team_{team2_id}')
-            
-            if team1 is None:
-                team1 = Team.objects.select_related('logo').get(pk=team1_id)
-                cache.set(f'team_{team1_id}', team1)
-            
-            if team2 is None:
-                team2 = Team.objects.select_related('logo').get(pk=team2_id)
-                cache.set(f'team_{team2_id}', team2)
+            team1 = Team.objects.get(pk=team1_id)
+            team2 = Team.objects.get(pk=team2_id)
 
             selected_teams = {
                 'team1_name': team1.name,
@@ -184,9 +172,8 @@ def generate_predictions(request):
             }
 
             predictions = []
-
-            # Generate 3 random predictions (adjust the number as needed)
-            for _ in range(3):
+            
+            for _ in range(3):  # Generate 10 random predictions
                 score1 = randint(0, 5)
                 score2 = randint(0, 5)
                 predictions.append({'team1': str(team1), 'team2': str(team2), 'score1': score1, 'score2': score2})
@@ -206,7 +193,6 @@ def generate_predictions(request):
             return JsonResponse({'message': 'Invalid input'}, status=400)
 
     return JsonResponse({'message': 'Invalid request'}, status=400)
-
 
 from django.conf import settings
 from django.core.files.uploadedfile import InMemoryUploadedFile
