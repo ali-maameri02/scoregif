@@ -402,15 +402,14 @@
                         stopPredictions();
                     }
                 });
-                var stopGeneration = false;
-
+                
                 $('#stop-button').click(function() {
                     $('#gif-container').show();
                     $('#stop-button').hide();
-                    // Set the flag to stop generation
+        
                     // Show the selected teams container
                     $('#team1content').hide();
-                    stopGeneration = true;
+                    stopPredictions();
                     updateGifDisplay('media/match.gif');
                 });
                
@@ -466,9 +465,6 @@
                 // ... (rest of your code)
             
                 function generateRandomScore() {
-                    if (stopGeneration) {
-                        return; // Stop generating if the flag is set
-                    }
                     var team1Id = selectedTeams[0];
                     var team2Id = selectedTeams[1];
                 
