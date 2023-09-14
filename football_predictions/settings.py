@@ -32,7 +32,7 @@ TWITTER_API_KEY = 'lD8MIDfbsO216w7Jh04Rzt9x9'
 TWITTER_API_SECRET = 'Vje3Y4mmmMJltgc7YGGIYDGvUgzUswv91CL4kCGxXuHR2XRoOS'
 ACCESS_TOKEN = '1697935934929485824-w7uBXn8EfOp43BH6xQodGuA4jByRQn'
 ACCESS_TOKEN_SECRET = 'CL0MKtCDt7bGl8nsoYbYzEw4dzJ6prqgTDp3CWX9NzCEc'
-TWITTER_CALLBACK_URL = 'https://footballpredictions.local:8000/twitter/callback'
+TWITTER_CALLBACK_URL = 'https://score-gif.onrender.com/twitter/callback'
 
 
 # Application definition
