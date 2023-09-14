@@ -925,3 +925,6 @@ body.jazzmin-login-page {
     float: left;
     width: 100%;
 }
+.img-circle{
+    border-radius: 5px;
+}

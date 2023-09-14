@@ -127,6 +127,7 @@ JAZZMIN_SETTINGS = {
      "site_header": "Score_gif",
          "site_logo": "images/logo.png",
               "welcome_sign": "Welcome to the Admin panel!",
+                  "site_logo_classes": "img-circle",
 }
 
 
