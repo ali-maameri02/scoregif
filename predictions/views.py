@@ -184,9 +184,8 @@ def generate_predictions(request):
             
             # Generate and save the GIF using the modified function
             gif_filename = generate_match_gif(predictions, team1_logo_bytes, team2_logo_bytes)
-
-            return JsonResponse({'message': 'Predictions generated successfully', 'predictions': predictions, 'selected_teams': selected_teams, 'gif_url': gif_filename})
-
+            gif_url = os.path.join(settings.MEDIA_URL, gif_filename)
+            return JsonResponse({'message': 'Predictions generated successfully', 'predictions': predictions, 'selected_teams': selected_teams, 'gif_url': gif_url})
         except Team.DoesNotExist:
             return JsonResponse({'message': 'Selected teams not found'}, status=400)
         except ValueError:

@@ -449,8 +449,8 @@
                     // Add a click event handler to the "Download GIF" button
                     $('#download-gif-button').click(function() {
                         // Replace 'gifUrl' with the actual GIF URL received from your AJAX response
-                        var gifUrl = 'https://score-gif.onrender.com/media/match.gif';
-                        // Replace with the actual GIF URL
+                        var gifUrl = '{{ gif_url }}';
+                                                // Replace with the actual GIF URL
                 
                         // Create a hidden anchor element to trigger the download
                         var downloadLink = document.createElement('a');
