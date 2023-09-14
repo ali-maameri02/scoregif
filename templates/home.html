@@ -407,10 +407,10 @@
                 $('#stop-button').click(function() {
                     $('#gif-container').show();
                     $('#stop-button').hide();
-                    stopGeneration = true; // Set the flag to stop generation
+                    // Set the flag to stop generation
                     // Show the selected teams container
                     $('#team1content').hide();
-                    stopPredictions();
+                    stopGeneration = true;
                     updateGifDisplay('media/match.gif');
                 });
                
