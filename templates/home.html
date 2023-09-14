@@ -420,7 +420,7 @@
                     predictionInterval = null;
                     $('#generatMatch').text('Generate Predictions');
                     $('#stop-button').prop('disabled', true);
-                    updateGifDisplay('media/match.gif');  // Display the GIF
+                    updateGifDisplay('/media/match.gif');  // Display the GIF
                     $('#gif-container').show();
                     $('#gif-container').show();
                     // Show the selected teams container
@@ -439,7 +439,7 @@
                     // Add a click event handler to the "Download GIF" button
                     $('#download-gif-button').click(function() {
                         // Replace 'gifUrl' with the actual GIF URL received from your AJAX response
-                        var gifUrl = 'https://footballpredictions.local:8000/media/match.gif';
+                        //var gifUrl = 'https://footballpredictions.local:8000/media/match.gif';
                         // Replace with the actual GIF URL
                 
                         // Create a hidden anchor element to trigger the download
