@@ -441,7 +441,7 @@
                 
                 function updateGifDisplay(gifUrl) {
                     // Display the GIF in the "gif-container" div
-                    $('#gif-container').html('<div class="d-flex flex-column justify-content-around align-items-center">' + '<img src="' + gifUrl + '" alt="Match GIF click download to see it!" class="imggif shadow-lg">' + '<button id="download-gif-button" class="btn register mt-4 mb-4 w-50">Download GIF</button>' + '</div>');
+                    $('#gif-container').html('<div class="d-flex flex-column justify-content-around align-items-center">' + '<img src="' + gifUrl + '" alt="Match GIF click download to see it!" class="imggif shadow-lg">' + '<button id="download-gif-button" class="btn register mt-4 mb-4 w-50" style="font-size=30%;">Download GIF</button>' + '</div>');
                     $('.fb-share-button').attr('data-href', gifUrl);
                     // Add a click event handler to the "Download GIF" button
                     $('#download-gif-button').click(function() {
