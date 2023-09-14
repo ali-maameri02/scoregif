@@ -364,3 +364,25 @@ footer a {
 .imggif{
     border-radius: 15px;
 }
+.teams-container::-webkit-scrollbar {
+    display: none; /* for Chrome, Safari, and Opera */
+}
+
+.teams-container::-webkit-scrollbar-track {
+    -ms-overflow-style: none; /* for Internet Explorer, Edge */
+    scrollbar-width: none; /* for Firefox */
+    overflow-x: scroll; 
+}
+
+.teams-container::-webkit-scrollbar-thumb {
+    -ms-overflow-style: none; /* for Internet Explorer, Edge */
+    scrollbar-width: none; /* for Firefox */
+    overflow-x: scroll; 
+}
+
+/* Styles to hide the scrollbar in other browsers */
+.teams-container.hide-scrollbar {
+    -ms-overflow-style: none; /* for Internet Explorer, Edge */
+    scrollbar-width: none; /* for Firefox */
+    overflow-x: scroll; /* Internet Explorer/Edge */
+}

@@ -241,13 +241,16 @@
                     <div class="league btn col-lg-2 col-md-4 col-sm-8"    data-league-id="{{ tournament.id }}"><img src="{{tournament.logo.url}}" alt=""></div>
                     {% endfor %}
                 </div>
-                <div class="teams d-flex justify-content-lg-start justify-content-md-center justify-content-sm-center row"   id="teams">
-                    {% for team in teams %}
-                    <div class="team btn col-lg-2 col-md-4 col-sm-8 " style="display: none;" data-team="{{ team.id }}">
-                        <img src="{{ team.logo.url }}" class="imgteam" alt="{{ team.name }}" width="200" height="100">
+                <div class="teams-container" id="teams-container">
+                    <div class="teams d-flex flex-nowrap overflow-auto teams-container" id="teams">
+                        {% for team in teams %}
+                        <div class="team btn col-lg-2 col-md-4 col-sm-8" style="display: none;" data-team="{{ team.id }}">
+                            <img src="{{ team.logo.url }}" class="imgteam" alt="{{ team.name }}" width="200" height="100">
+                        </div>
+                        {% endfor %}
                     </div>
-                    {% endfor %}
                 </div>
+                
                 
                 
                 <div class="next-prev-btn">
@@ -512,7 +515,7 @@
             });
             
  </script>
-      
+
 
         <!-- <script src="{% static 'https://kit.fontawesome.com/d14523d182.js' %}" crossorigin="anonymous"></script> -->
 </body>
