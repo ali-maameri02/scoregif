@@ -156,8 +156,11 @@ import imageio
 import os
 from random import randint
 from .models import Team  # Make sure to import your Team model
-from io import BytesIO  # Import BytesIO for working with image data
+from io import BytesIO 
+stop_generation = False  # Initialize the flag to False # Import BytesIO for working with image data
 def generate_predictions(request):
+    global stop_generation  # Use the global flag
+
     if request.method == 'POST' and 'team1_id' in request.POST and 'team2_id' in request.POST:
         try:
             team1_id = int(request.POST['team1_id'])
@@ -173,9 +176,9 @@ def generate_predictions(request):
 
             predictions = []
             
-            for _ in range(3): 
+            for _ in range(3):
                 if stop_generation:  # Check if the stop flag is set
-                 break   # Generate 10 random predictions
+                    break
                 score1 = randint(0, 5)
                 score2 = randint(0, 5)
                 predictions.append({'team1': str(team1), 'team2': str(team2), 'score1': score1, 'score2': score2})
@@ -187,6 +190,10 @@ def generate_predictions(request):
             # Generate and save the GIF using the modified function
             gif_filename = generate_match_gif(predictions, team1_logo_bytes, team2_logo_bytes)
             gif_url = os.path.join(settings.MEDIA_URL, gif_filename)
+            
+            # Reset the flag after generating
+            stop_generation = False
+
             return JsonResponse({'message': 'Predictions generated successfully', 'predictions': predictions, 'selected_teams': selected_teams, 'gif_url': gif_url})
         except Team.DoesNotExist:
             return JsonResponse({'message': 'Selected teams not found'}, status=400)
@@ -194,7 +201,6 @@ def generate_predictions(request):
             return JsonResponse({'message': 'Invalid input'}, status=400)
 
     return JsonResponse({'message': 'Invalid request'}, status=400)
-
 from django.conf import settings
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from PIL import Image, ImageDraw, ImageFont
