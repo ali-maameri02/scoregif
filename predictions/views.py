@@ -173,7 +173,9 @@ def generate_predictions(request):
 
             predictions = []
             
-            for _ in range(3):  # Generate 10 random predictions
+            for _ in range(3): 
+                if stop_generation:  # Check if the stop flag is set
+                 break   # Generate 10 random predictions
                 score1 = randint(0, 5)
                 score2 = randint(0, 5)
                 predictions.append({'team1': str(team1), 'team2': str(team2), 'score1': score1, 'score2': score2})

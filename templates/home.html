@@ -402,11 +402,12 @@
                         stopPredictions();
                     }
                 });
-                
+                var stopGeneration = false;
+
                 $('#stop-button').click(function() {
                     $('#gif-container').show();
                     $('#stop-button').hide();
-        
+                    stopGeneration = true; // Set the flag to stop generation
                     // Show the selected teams container
                     $('#team1content').hide();
                     stopPredictions();
@@ -415,7 +416,7 @@
                
                 function startPredictions() {
                     if (selectedTeams.length === 2) {
-                        predictionInterval = setInterval(generateRandomScore, 50);
+                        predictionInterval = setInterval(generateRandomScore, 10);
                         $('#generatMatch').text('Generating...');
                         $('#stop-button').prop('disabled', false);
                         $('#share-button').prop('disabled', false); 
@@ -465,6 +466,9 @@
                 // ... (rest of your code)
             
                 function generateRandomScore() {
+                    if (stopGeneration) {
+                        return; // Stop generating if the flag is set
+                    }
                     var team1Id = selectedTeams[0];
                     var team2Id = selectedTeams[1];
                 
