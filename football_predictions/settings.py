@@ -121,6 +121,12 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+JAZZMIN_SETTINGS = {
+    "site_title": "Score_gif",
+     "site_header": "Score_gif",
+         "site_logo": "images/logo.png",
+              "welcome_sign": "Welcome to the Admin panel!",
+}
 
 
 # Internationalization
