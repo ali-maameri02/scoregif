@@ -369,90 +369,43 @@
         <script src="{% static 'js/script.js' %}"></script>
         <script>
             
-            $(document).ready(function() {
+            $(document).ready(function () {
                 var selectedTeams = [];
-                var teamNames = [];  // To store selected team names
-                var teamLogos = [];  // To store selected team logos
+                var teamNames = []; // To store selected team names
+                var teamLogos = []; // To store selected team logos
                 var predictionInterval;
                 
-                $('.team').click(function() {
+                // Variable to track prediction status
+                var stopPredictionsFlag = false;
+            
+                $('.team').click(function () {
                     var teamId = $(this).data('team');
-                    
+            
                     if (selectedTeams.length < 2) {
                         selectedTeams.push(teamId);
-                        
+            
                         var teamName = $(this).prev().text();
                         var teamLogoUrl = $(this).find('img').attr('src');
-                        
+            
                         $('#team' + selectedTeams.length + '-name').text(teamName);
-                        
-                        teamNames[selectedTeams.length - 1] = teamName;  // Store team name
-                        teamLogos[selectedTeams.length - 1] = teamLogoUrl;  // Store team logo URL
-                        
+            
+                        teamNames[selectedTeams.length - 1] = teamName; // Store team name
+                        teamLogos[selectedTeams.length - 1] = teamLogoUrl; // Store team logo URL
+            
                         if (selectedTeams.length === 2) {
                             $('#generatMatch').prop('disabled', false);
                         }
                     }
                 });
-                
-                $('#generatMatch').click(function() {
-                    if (!predictionInterval) {
-                        updateScores(0, 0);
-                        startPredictions();
-                    } else {
-                        stopPredictions();
-                    }
-                });
-                
-                $('#stop-button').click(function() {
-                    $('#gif-container').show();
-                    $('#stop-button').hide();
-        
-                    // Show the selected teams container
-                    $('#team1content').hide();
-                    stopPredictions();
-                    updateGifDisplay('media/match.gif');
-                });
-               
-                function startPredictions() {
-                    if (selectedTeams.length === 2) {
-                        predictionInterval = setInterval(generateRandomScore, 10);
-                        $('#generatMatch').text('Generating...');
-                        $('#stop-button').prop('disabled', false);
-                        $('#share-button').prop('disabled', false); 
-                        $('#team1content').show();
-                        // Enable share button
-                        $('#gif-container').hide();
-                    }
-                }
-                
-                function stopPredictions() {
-                    clearInterval(predictionInterval);
-                    predictionInterval = null;
-                    $('#generatMatch').text('Generate Predictions');
-                    $('#stop-button').prop('disabled', true);
-                    updateGifDisplay('media/match.gif');  // Display the GIF
-                    $('#gif-container').show();
-                    $('#gif-container').show();
-                    // Show the selected teams container
-                    $('#team1content').hide();
-                }
-                
-                function updateScores(score1, score2) {
-                    $('#team1-score').text('Score: ' + score1);
-                    $('#team2-score').text('Score: ' + score2);
-                }
-                
                 function updateGifDisplay(gifUrl) {
                     // Display the GIF in the "gif-container" div
                     $('#gif-container').html('<div class="d-flex flex-column justify-content-around align-items-center">' + '<img src="' + gifUrl + '" alt="Match GIF click download to see it!" class="imggif shadow-lg">' + '<button id="download-gif-button" class="btn register mt-4 mb-4 w-50" style="font-size=30%;">Download GIF</button>' + '</div>');
                     $('.fb-share-button').attr('data-href', gifUrl);
                     // Add a click event handler to the "Download GIF" button
-                    $('#download-gif-button').click(function() {
+                    $('#download-gif-button').click(function () {
                         // Replace 'gifUrl' with the actual GIF URL received from your AJAX response
-                        var gifUrl = '{{ gif_url }}';
-                                                // Replace with the actual GIF URL
-                
+                        var gifUrl = '{{ gif_url }}'; // Replace with the actual GIF URL
+            
                         // Create a hidden anchor element to trigger the download
                         var downloadLink = document.createElement('a');
                         downloadLink.href = gifUrl;
@@ -462,58 +415,118 @@
                         document.body.removeChild(downloadLink);
                     });
                 }
-            
-                // ... (rest of your code)
-            
                 function generateRandomScore() {
                     var team1Id = selectedTeams[0];
                     var team2Id = selectedTeams[1];
-                
+            
                     $.ajax({
                         type: 'POST',
-                        url: '/generate_predictions/',  // Update this URL as needed
-                        data: { team1_id: team1Id, team2_id: team2Id, csrfmiddlewaretoken: '{{ csrf_token }}' },
+                        url: '/generate_predictions/', // Update this URL as needed
+                        data: {
+                            team1_id: team1Id,
+                            team2_id: team2Id,
+                            csrfmiddlewaretoken: '{{ csrf_token }}'
+                        },
                         dataType: 'json',
-                        success: function(response) {
+                        success: function (response) {
                             if (response.predictions) {
-                                var prediction = response.predictions[0];  // Get the first prediction
+                                var prediction = response.predictions[0]; // Get the first prediction
                                 updateScores(prediction.score1, prediction.score2);
-                                displaySelectedTeams(response.selected_teams);  // Display selected teams
-                                displaySelectedTeamLogos();  // Display selected team logos
+                                displaySelectedTeams(response.selected_teams); // Display selected teams
+                                displaySelectedTeamLogos(); // Display selected team logos
                                 // Share the score
                             }
                         },
-                       
-                        
+                        error: function (xhr, status, error) {
+                            // Handle errors if necessary
+                            console.error(error);
+                        }
                     });
                 }
-                
+                $('#generatMatch').click(function () {
+                    if (!predictionInterval) {
+                        updateScores(0, 0);
+                        startPredictions();
+                    } else {
+                        stopPredictions();
+                    }
+                });
+            
+                $('#stop-button').click(function () {
+                    $('#gif-container').show();
+                    $('#stop-button').hide();
+                    updateScores(0, 0);
+                    // Show the selected teams container
+                    $('#team1content').hide();
+                    stopPredictionsFlag = true; // Set the flag to stop predictions
+                    updateGifDisplay('media/match.gif');
+                });
+            
+                function startPredictions() {
+                    if (selectedTeams.length === 2) {
+                        predictionInterval = setInterval(function () {
+                            if (!stopPredictionsFlag) { // Check the flag before generating predictions
+                                generateRandomScore();
+                            }
+                        }, 10);
+                        $('#generatMatch').text('Generating...');
+                        $('#stop-button').prop('disabled', false);
+                        $('#share-button').prop('disabled', false);
+                        $('#team1content').show();
+                        // Enable share button
+                        $('#gif-container').hide();
+                    }
+                }
+            
+                function stopPredictions() {
+                    clearInterval(predictionInterval);
+                    predictionInterval = null;
+                    $('#generatMatch').text('Generate Predictions');
+                    $('#stop-button').prop('disabled', true);
+                    updateGifDisplay('media/match.gif'); // Display the GIF
+                    $('#gif-container').show();
+                    // Show the selected teams container
+                    $('#team1content').hide();
+                    updateScores(0, 0);
+                }
+            
+                function updateScores(score1, score2) {
+                    $('#team1-score').text('Score: ' + score1);
+                    $('#team2-score').text('Score: ' + score2);
+                }
+            
+              
+            
+              
+            
                 function displaySelectedTeams(selectedTeamsData) {
                     $('#team1-name').text('Team: ' + selectedTeamsData.team1_name);
                     $('#team2-name').text('Team: ' + selectedTeamsData.team2_name);
                 }
-                
+            
                 function displaySelectedTeamLogos() {
                     $('#team1-logo').attr('src', teamLogos[0]);
                     $('#team2-logo').attr('src', teamLogos[1]);
                 }
-   // Get a reference to the close button
-   const closeButton = document.getElementById('close-button');
-        
-   // Add a click event listener to the close button
-   closeButton.addEventListener('click', function() {
-       // Get a reference to the card div
-       const cardDiv = document.querySelector('#matchCard');
-       selectedTeams = [];
-                 teamNames = [];  // To store selected team names
-                 teamLogos = [];  
-                 $('#generatMatch').text('Generate');// 
-       clearInterval(predictionInterval);
-       predictionInterval = null;
-       // Hide the card div
-       cardDiv.style.display = 'none';
-   });
+            
+                // Get a reference to the close button
+                const closeButton = document.getElementById('close-button');
+            
+                // Add a click event listener to the close button
+                closeButton.addEventListener('click', function () {
+                    // Get a reference to the card div
+                    const cardDiv = document.querySelector('#matchCard');
+                    selectedTeams = [];
+                    teamNames = []; // To store selected team names
+                    teamLogos = [];
+                    $('#generatMatch').text('Generate'); //
+                    clearInterval(predictionInterval);
+                    predictionInterval = null;
+                    // Hide the card div
+                    cardDiv.style.display = 'none';
+                });
             });
+            
             
  </script>
 

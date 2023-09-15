@@ -157,7 +157,10 @@ import os
 from random import randint
 from .models import Team  # Make sure to import your Team model
 from io import BytesIO  # Import BytesIO for working with image data
+stop_predictions_flag = False
+
 def generate_predictions(request):
+    global stop_predictions_flag  # Access the global variable
     if request.method == 'POST' and 'team1_id' in request.POST and 'team2_id' in request.POST:
         try:
             team1_id = int(request.POST['team1_id'])
@@ -173,10 +176,13 @@ def generate_predictions(request):
 
             predictions = []
             
-            for _ in range(3):  # Generate 10 random predictions
+            while not stop_predictions_flag and len(predictions) < 3:  # Generate random predictions until stopped or you have 3 predictions
                 score1 = randint(0, 5)
                 score2 = randint(0, 5)
                 predictions.append({'team1': str(team1), 'team2': str(team2), 'score1': score1, 'score2': score2})
+
+            # Reset the flag
+            stop_predictions_flag = False
 
             # Convert team logos to bytes (assuming they are ImageField objects)
             team1_logo_bytes = team1.logo.read() if team1.logo else None
