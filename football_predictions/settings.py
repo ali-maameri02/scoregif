@@ -128,6 +128,15 @@ JAZZMIN_SETTINGS = {
          "site_logo": "images/logo.png",
               "welcome_sign": "Welcome to the Admin panel!",
                   "site_logo_classes": "img-circle",
+                      'icons': {
+        
+        'predictions.Tournament':'fa fa-trophy',
+        'predictions.Match':'fa-solid fa-drum',
+        'predictions.Prediction':'fas fa-dice-six',
+        'predictions.Team':'far fa-futbol',
+        'auth.User':'fa fa-user',
+        'auth.Group':'fa fa-users',
+    }
 }
 
 

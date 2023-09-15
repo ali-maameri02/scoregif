@@ -368,7 +368,9 @@ footer a {
     display: none; /* for Chrome, Safari, and Opera */
 }
 @media (max-width: 767px) {
-
+.teams{
+    flex-wrap: nowrap;
+}
 .teams-container::-webkit-scrollbar-track {
     -ms-overflow-style: none; /* for Internet Explorer, Edge */
     scrollbar-width: none; /* for Firefox */

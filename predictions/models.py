@@ -42,21 +42,24 @@ class Match(models.Model):
     def __str__(self):
         return f"{self.team_home} vs {self.team_away}"
 
+    def clean(self):
+        if self.tournament.name not in ["UEFA", "Europa"]:
+            if self.team_home and self.team_away:
+                team_home_tournament = self.team_home.tournament_set.first()
+                team_away_tournament = self.team_away.tournament_set.first()
+
+                if team_home_tournament != team_away_tournament:
+                    raise ValidationError("Both teams must belong to the same tournament.")
+        else:
+            # For "UEFA" or "Europa," teams can be from different tournaments
+            return
+
+        super().clean()
+
     def save(self, *args, **kwargs):
-        if self.team_home and self.team_away:
-            if self.team_home not in self.tournament.teams.all() or self.team_away not in self.tournament.teams.all():
-                raise ValueError("Both teams must belong to the same tournament.")
+        self.clean()
         super().save(*args, **kwargs)
 
-    def clean(self):
-        if self.team_home and self.team_away:
-            team_home_tournament = self.team_home.tournament_set.first()
-            team_away_tournament = self.team_away.tournament_set.first()
-
-            if team_home_tournament != team_away_tournament:
-                raise ValidationError("Both teams must belong to the same tournament.")
-
-        super().clean()  # Ca
 
 class Prediction(models.Model):
     match = models.ForeignKey(Match, on_delete=models.CASCADE)

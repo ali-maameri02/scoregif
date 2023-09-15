@@ -240,7 +240,7 @@
                     {% endfor %}
                 </div>
                 <div class="teams-container" id="teams-container">
-                    <div class="teams d-flex flex-nowrap overflow-auto teams-container" id="teams">
+                    <div class="teams d-flex  overflow-auto teams-container p-3" id="teams">
                         {% for team in teams %}
                         <div class="team btn col-lg-2 col-md-4 col-sm-8" style="display: none;" data-team="{{ team.id }}">
                             <img src="{{ team.logo.url }}" class="imgteam" alt="{{ team.name }}" width="200" height="100">
