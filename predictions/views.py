@@ -11,7 +11,7 @@ from random import randint
 from .models import *
 import tweepy
 from django.conf import settings
-
+from datetime import date  # Import the 'date' object
 def LogoutView(request):
     return auth_logout(request, next_page='login')
 
@@ -103,7 +103,7 @@ def home(request):
     description = "Check out this prediction!"
     facebook_username = None
     tournaments = Tournament.objects.all()
-
+    today_matches = Match.objects.filter(match_date__date=date.today())  # Assuming you want today's matches
     selected_tournament_id = request.GET.get('selected_tournament_id')
     selected_teams = []
 
@@ -126,6 +126,7 @@ def home(request):
 
     return render(request, 'home.html', {
         'teams': teams,
+        'today_matches': today_matches,  # Pass today's matches to the template
         'predictions': predictions,
         'description': description,
         'facebook_username': facebook_username,

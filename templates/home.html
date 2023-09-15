@@ -256,81 +256,31 @@
                     <button class="btn" id="nextButton">next</button>
                     <button class="btn"   id="generatMatch">Generate</button>
                 </div>
-                <h1>today Match</h1>
+                <h1>Today's Matches</h1>
                 <div class="matches d-flex justify-content-lg-between justify-content-md-center  row" id="matchesToday">
-                    <div class="match-today col-lg-5 col-md-7 col-sm-10  card d-flex justify-content-between p-2 align-items-center">
-                        <div class="team-one">
-                            <div class="logo-team d-flex justify-content-between align-items-center  gap-2 ">
-                                <img src="{% static 'images/Arsenal.png' %}" alt="">
-                                <h6>arsenal</h6>
+                                        {% for match in today_matches %}
+                                        <div class="match-today col-lg-5 col-md-7 col-sm-10  card d-flex justify-content-between p-2 align-items-center">
+                                                                        <div class="team-one">
+                                <div class="logo-team d-flex justify-content-between align-items-center gap-2">
+                                    <img src="{{ match.team_home.logo.url }}" alt="{{ match.team_home.name }}">
+                                    <h6>{{ match.team_home.name }}</h6>
+                                </div>
+                            </div>
+                            <div class="info-match">
+                                <p>{{ match.match_date|date:"H:i" }}</p>
+                                <span>{{ match.tournament.name }}</span>
+                            </div>
+                            <div class="team-two">
+                                <div class="logo-team d-flex justify-content-between align-items-center gap-3">
+                                    <h6>{{ match.team_away.name }}</h6>
+                                    <img src="{{ match.team_away.logo.url }}" alt="{{ match.team_away.name }}">
+                                </div>
                             </div>
                         </div>
-                        <div class="info-match">
-                            <p>17:00</p>
-                            <span>Angland</span>
-                        </div>
-                        <div class="team-two">
-                            <div class="logo-team d-flex justify-content-between align-items-center  gap-3">
-                                <h6>chelse</h6>
-                                <img src="{% static 'images/chelsea.png' %}" alt="">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="match-today col-lg-5 col-md-7 col-sm-10 card d-flex justify-content-between p-2 align-items-center">
-                        <div class="team-one">
-                            <div class="logo-team d-flex justify-content-between align-items-center  gap-2 ">
-                                <img src="{% static 'images/Arsenal.png' %}" alt="">
-                                <h6>arsenal</h6>
-                            </div>
-                        </div>
-                        <div class="info-match">
-                            <p>17:00</p>
-                            <span>Angland</span>
-                        </div>
-                        <div class="team-two">
-                            <div class="logo-team d-flex justify-content-between align-items-center  gap-3">
-                                <h6>chelse</h6>
-                                <img src="{% static 'images/chelsea.png' %}" alt="">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="match-today col-lg-5 col-md-7 col-sm-10 card d-flex justify-content-between p-2 align-items-center">
-                        <div class="team-one">
-                            <div class="logo-team d-flex justify-content-between align-items-center  gap-2 ">
-                                <img src="{% static 'images/Arsenal.png' %}" alt="">
-                                <h6>arsenal</h6>
-                            </div>
-                        </div>
-                        <div class="info-match">
-                            <p>17:00</p>
-                            <span>Angland</span>
-                        </div>
-                        <div class="team-two">
-                            <div class="logo-team d-flex justify-content-between align-items-center  gap-3">
-                                <h6>chelse</h6>
-                                <img src="{% static 'images/chelsea.png' %}" alt="">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="match-today col-lg-5 col-md-7 col-sm-10 card d-flex justify-content-between p-2 align-items-center">
-                        <div class="team-one">
-                            <div class="logo-team d-flex justify-content-between align-items-center  gap-2 ">
-                                <img src="{% static 'images/Arsenal.png' %}" alt="">
-                                <h6>arsenal</h6>
-                            </div>
-                        </div>
-                        <div class="info-match">
-                            <p>17:00</p>
-                            <span>Angland</span>
-                        </div>
-                        <div class="team-two">
-                            <div class="logo-team d-flex justify-content-between align-items-center  gap-3">
-                                <h6>chelse</h6>
-                                <img src="{% static 'images/chelsea.png' %}" alt="">
-                            </div>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
+                
+                   
         </main>
         <footer class="text-center p-3">
 
