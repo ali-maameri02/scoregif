@@ -82,6 +82,7 @@
                          
                         
                             </div>
+                            <div class="aftergif d-flex flex-column justify-content-around align-items-center">
                             <div id="gif-container" class="d-flex justify-content-center align-items-center" style="display: none;">
                                 <!-- The GIF will be inserted here -->
                               
@@ -89,7 +90,7 @@
                         </div>
                         <div class="fb-share-button d-flex justify-content-center align-items-center mb-3 mt-3 " data-href="https://score-gif.onrender.com/media/match.gif" data-layout="button_count">
                             <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fscore-gif.onrender.com%2Fmedia%2Fmatch.gif" class="fb-xfbml-parse-ignore">Share</a>
-                        </div>
+                        </div></div>
                         
                         
                             
@@ -318,15 +319,13 @@
         <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
         <script src="{% static 'js/script.js' %}"></script>
         <script>
-            
             $(document).ready(function () {
                 var selectedTeams = [];
-                var teamNames = []; // To store selected team names
-                var teamLogos = []; // To store selected team logos
+                var teamNames = [];
+                var teamLogos = [];
                 var predictionInterval;
-                
-                // Variable to track prediction status
                 var stopPredictionsFlag = false;
+                var gifUrl = null; // Store the GIF URL
             
                 $('.team').click(function () {
                     var teamId = $(this).data('team');
@@ -339,60 +338,67 @@
             
                         $('#team' + selectedTeams.length + '-name').text(teamName);
             
-                        teamNames[selectedTeams.length - 1] = teamName; // Store team name
-                        teamLogos[selectedTeams.length - 1] = teamLogoUrl; // Store team logo URL
+                        teamNames[selectedTeams.length - 1] = teamName;
+                        teamLogos[selectedTeams.length - 1] = teamLogoUrl;
             
                         if (selectedTeams.length === 2) {
                             $('#generatMatch').prop('disabled', false);
                         }
                     }
                 });
-                function updateGifDisplay(gifUrl) {
-                    // Display the GIF in the "gif-container" div
-                    $('#gif-container').html('<div class="d-flex flex-column justify-content-around align-items-center">' + '<img src="' + gifUrl + '" alt="Match GIF click download to see it!" class="imggif shadow-lg">' + '<button id="download-gif-button" class="btn register mt-4 mb-4 w-50" style="font-size=30%;">Download GIF</button>' + '</div>');
-                    $('.fb-share-button').attr('data-href', gifUrl);
-                    // Add a click event handler to the "Download GIF" button
-                    $('#download-gif-button').click(function () {
-                        // Replace 'gifUrl' with the actual GIF URL received from your AJAX response
-                        var gifUrl = '{{ gif_url }}'; // Replace with the actual GIF URL
             
-                        // Create a hidden anchor element to trigger the download
-                        var downloadLink = document.createElement('a');
-                        downloadLink.href = gifUrl;
-                        downloadLink.download = 'match.gif'; // Specify the desired filename
-                        document.body.appendChild(downloadLink);
-                        downloadLink.click();
-                        document.body.removeChild(downloadLink);
-                    });
+                function updateGifDisplay() {
+                    if (gifUrl) {
+                        $('#gif-container').html('<div class="d-flex flex-column justify-content-around align-items-center">' +
+                            '<img src="' + gifUrl + '" alt="Match GIF click download to see it!" class="imggif shadow-lg">' +
+                            '<button id="download-gif-button" class="btn register mt-4 mb-4 w-50" style="font-size=30%;">Download GIF</button>' +
+                            '</div>');
+                        $('.fb-share-button').attr('data-href', gifUrl);
+            
+                        // Add a click event handler to the "Download GIF" button
+                        $('#download-gif-button').click(function () {
+                            var downloadLink = document.createElement('a');
+                            downloadLink.href = gifUrl;
+                            downloadLink.download = 'match.gif';
+                            document.body.appendChild(downloadLink);
+                            downloadLink.click();
+                            document.body.removeChild(downloadLink);
+                        });
+                        $('#stop-button').hide();
+                    }
                 }
+            
                 function generateRandomScore() {
-                    var team1Id = selectedTeams[0];
-                    var team2Id = selectedTeams[1];
+                    if (selectedTeams.length === 2) {
+                        var score1 = Math.floor(Math.random() * 6);
+                        var score2 = Math.floor(Math.random() * 6);
             
-                    $.ajax({
-                        type: 'POST',
-                        url: '/generate_predictions/', // Update this URL as needed
-                        data: {
-                            team1_id: team1Id,
-                            team2_id: team2Id,
-                            csrfmiddlewaretoken: '{{ csrf_token }}'
-                        },
-                        dataType: 'json',
-                        success: function (response) {
-                            if (response.predictions) {
-                                var prediction = response.predictions[0]; // Get the first prediction
-                                updateScores(prediction.score1, prediction.score2);
-                                displaySelectedTeams(response.selected_teams); // Display selected teams
-                                displaySelectedTeamLogos(); // Display selected team logos
-                                // Share the score
+                        $('#team1-score').text('Score: ' + score1);
+                        $('#team2-score').text('Score: ' + score2);
+                        $('#team1-logo').attr('src', teamLogos[0]);
+                        $('#team2-logo').attr('src', teamLogos[1]);
+            
+                        $.ajax({
+                            type: 'POST',
+                            url: '/generate_predictions/',
+                            data: {
+                                team1_id: selectedTeams[0],
+                                team2_id: selectedTeams[1],
+                                csrfmiddlewaretoken: '{{ csrf_token }}'
+                            },
+                            dataType: 'json',
+                            success: function (response) {
+                                if (response.gif_url) {
+                                    gifUrl = response.gif_url; // Store the GIF URL
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                console.error(error);
                             }
-                        },
-                        error: function (xhr, status, error) {
-                            // Handle errors if necessary
-                            console.error(error);
-                        }
-                    });
+                        });
+                    }
                 }
+            
                 $('#generatMatch').click(function () {
                     if (!predictionInterval) {
                         updateScores(0, 0);
@@ -403,28 +409,22 @@
                 });
             
                 $('#stop-button').click(function () {
-                    $('#gif-container').show();
-                    $('#stop-button').hide();
-                    updateScores(0, 0);
-                    // Show the selected teams container
-                    $('#team1content').hide();
-                    stopPredictionsFlag = true; // Set the flag to stop predictions
-                    updateGifDisplay('media/match.gif');
+                    stopPredictions();
+            
+                    // Display the GIF when the "Stop" button is clicked
+                    updateGifDisplay();
                 });
             
                 function startPredictions() {
                     if (selectedTeams.length === 2) {
                         predictionInterval = setInterval(function () {
-                            if (!stopPredictionsFlag) { // Check the flag before generating predictions
+                            if (!stopPredictionsFlag) {
                                 generateRandomScore();
                             }
-                        }, 10);
+                        }, 50);
                         $('#generatMatch').text('Generating...');
                         $('#stop-button').prop('disabled', false);
-                        $('#share-button').prop('disabled', false);
                         $('#team1content').show();
-                        // Enable share button
-                        $('#gif-container').hide();
                     }
                 }
             
@@ -433,9 +433,7 @@
                     predictionInterval = null;
                     $('#generatMatch').text('Generate Predictions');
                     $('#stop-button').prop('disabled', true);
-                    updateGifDisplay('media/match.gif'); // Display the GIF
-                    $('#gif-container').show();
-                    // Show the selected teams container
+                    $('#gif-container').hide(); // Hide the GIF container
                     $('#team1content').hide();
                     updateScores(0, 0);
                 }
@@ -444,10 +442,6 @@
                     $('#team1-score').text('Score: ' + score1);
                     $('#team2-score').text('Score: ' + score2);
                 }
-            
-              
-            
-              
             
                 function displaySelectedTeams(selectedTeamsData) {
                     $('#team1-name').text('Team: ' + selectedTeamsData.team1_name);
@@ -476,9 +470,8 @@
                     cardDiv.style.display = 'none';
                 });
             });
+            </script>
             
-            
- </script>
 
 
         <!-- <script src="{% static 'https://kit.fontawesome.com/d14523d182.js' %}" crossorigin="anonymous"></script> -->

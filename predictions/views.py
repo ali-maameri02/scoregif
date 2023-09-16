@@ -148,7 +148,6 @@ def get_teams(request, tournament_id):  # Add 'tournament_id' parameter
     print(team_data) 
     return JsonResponse({'teams': team_data})
 
-
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.conf import settings
@@ -206,7 +205,7 @@ from PIL import Image, ImageDraw, ImageFont
 import os
 from io import BytesIO
 import imageio
-
+import random  # Add this import statement at the beginning of your Python code
 def calculate_text_width(draw, text, font):
     _, _, width, _ = draw.textbbox((0, 0), text, font=font)
     return width
@@ -297,10 +296,10 @@ def generate_match_gif(predictions, team1_logo_bytes, team2_logo_bytes):
         images.append(img)
 
     gif_path = os.path.join(settings.MEDIA_ROOT, 'match.gif')
-    imageio.mimsave(gif_path, images, duration=0.8)
+    imageio.mimsave(gif_path, images, duration=3.0)
 
     return os.path.join(settings.MEDIA_URL, 'match.gif')
-
+    
 from django.shortcuts import get_object_or_404, render
 from django.http import JsonResponse
 

@@ -11,4 +11,5 @@ urlpatterns = [
          path('twitter-authenticate/', views.twitter_authenticate, name='twitter_authenticate'),
             #  path('generate_gif/', views.generate_gif, name='generate_gif'),
     path('get_teams/<int:tournament_id>/', views.get_teams, name='get_teams'),    
+    
             ]
