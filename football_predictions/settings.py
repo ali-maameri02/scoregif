@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-xk1xph-nmesq=&^y9l6c1uj=&s$3hlo%0krgvw)=a!*7^v38ab
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['www.scoregifs.com','localhost','score-gif.onrender.com','footballpredictions.local','.vercel.app']
+ALLOWED_HOSTS = ['www.scoregifs.com','localhost','score-gif.onrender.com','footballpredictions.local']
 
 TWITTER_API_KEY = 'lD8MIDfbsO216w7Jh04Rzt9x9'
 TWITTER_API_SECRET = 'Vje3Y4mmmMJltgc7YGGIYDGvUgzUswv91CL4kCGxXuHR2XRoOS'
